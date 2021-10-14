@@ -1,4 +1,7 @@
-#!/usr/bin/python -tt
+# name: golan matuf
+# date: 20211014
+
+# !/usr/bin/python -tt
 # Copyright 2010 Google Inc.
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -28,7 +31,12 @@
 def donuts(count):
     """ your docstring here """
     # +++your code here+++
-    return
+    donut_string = 'Number of donuts: '
+    if count > 9:
+        donut_string += 'many'
+    else:
+        donut_string += str(count)
+    return donut_string
 
 
 # B. both_ends
@@ -41,7 +49,9 @@ def donuts(count):
 def both_ends(s):
     """ your docstring here """
     # +++your code here+++
-    return
+    if len(s) < 2:
+        return ''
+    return s[:2] + s[-2:]
 
 
 # C. fix_start
@@ -58,7 +68,7 @@ def both_ends(s):
 def fix_start(s):
     """ your docstring here """
     # +++your code here+++
-    return
+    return s[0] + s[1:].replace(s[0], '*')
 
 
 # D. MixUp
@@ -73,7 +83,7 @@ def fix_start(s):
 def mix_up(a, b):
     """ your docstring here """
     # +++your code here+++
-    return
+    return b[:2] + a[2:] + ' ' + a[:2] + b[2:]
 
 
 # E. verbing
@@ -88,7 +98,12 @@ def mix_up(a, b):
 def verbing(s):
     """ your docstring here """
     # +++your code here+++
-    return
+    if len(s) < 3:
+        return s
+    elif s[-3:] != 'ing':
+        return s + 'ing'
+    else:
+        return s + 'ly'
 
 
 # F. not_bad
@@ -104,7 +119,12 @@ def verbing(s):
 def not_bad(s):
     """ your docstring here """
     # +++your code here+++
-    return
+    not_index = s.find('not')
+    bad_index = s.find('bad')
+
+    if not_index < bad_index:
+        return s[:not_index] + 'good' + s[bad_index + 3:]
+    return s
 
 
 # G. front_back
@@ -119,7 +139,17 @@ def not_bad(s):
 def front_back(a, b):
     """ your docstring here """
     # +++your code here+++
-    return
+    if len(a) % 2 == 0:
+        mid_a = len(a) // 2
+    else:
+        mid_a = len(a) // 2 + 1
+
+    if len(b) % 2 == 0:
+        mid_b = len(b) // 2
+    else:
+        mid_b = len(b) // 2 + 1
+
+    return a[:mid_a] + b[:mid_b] + a[mid_a:] + b[mid_b:]
 
 
 # Provided simple test() function used in main() to print
@@ -144,21 +174,21 @@ def main():
     test(donuts(10), 'Number of donuts: many')
     test(donuts(99), 'Number of donuts: many')
 
-    print
+    print()
     print('both_ends')
     test(both_ends('spring'), 'spng')
     test(both_ends('Hello'), 'Helo')
     test(both_ends('a'), '')
     test(both_ends('xyz'), 'xyyz')
 
-    print
+    print()
     print('fix_start')
     test(fix_start('babble'), 'ba**le')
     test(fix_start('aardvark'), 'a*rdv*rk')
     test(fix_start('google'), 'goo*le')
     test(fix_start('donut'), 'donut')
 
-    print
+    print()
     print('mix_up')
     test(mix_up('mix', 'pod'), 'pox mid')
     test(mix_up('dog', 'dinner'), 'dig donner')
@@ -170,14 +200,14 @@ def main():
     test(verbing('swiming'), 'swimingly')
     test(verbing('do'), 'do')
 
-    print
+    print()
     print('not_bad')
     test(not_bad('This movie is not so bad'), 'This movie is good')
     test(not_bad('This dinner is not that bad!'), 'This dinner is good!')
     test(not_bad('This tea is not hot'), 'This tea is not hot')
     test(not_bad("It's bad yet not"), "It's bad yet not")
 
-    print
+    print()
     print('front_back')
     test(front_back('abcd', 'xy'), 'abxcdy')
     test(front_back('abcde', 'xyz'), 'abcxydez')

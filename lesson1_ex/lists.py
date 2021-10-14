@@ -1,3 +1,6 @@
+# name: golan matuf
+# date: 20211014
+
 """ This program has been adapted for use by GVAHIM
        - the main revisions regard pep8 compliance and use of variable names
 
@@ -43,7 +46,6 @@ def front_x(words):
     """ +++your code here+++ """
     words_with_x = []
     words_without_x = []
-    # removed those lines for iterating less
     """words_with_x = [word for word in words if word[0] == 'x']
     words_without_x = [word for word in words if word[0] != 'x']"""
     for word in words:
@@ -76,13 +78,9 @@ def remove_adjacent(nums):
     """  +++your code here+++ """
     nums.append(None)
     no_duplicate_nums = []
-    for i in range(len(nums)):
-        if int(i) == len(nums)-1:
-            break
+    for i in range(len(nums)-1):
         if nums[i] != nums[i+1]:
             no_duplicate_nums.append(nums[i])
-    # if len(nums) > 0:
-    #     no_duplicate_nums.append(nums[-1])
     return no_duplicate_nums
 
 
@@ -95,7 +93,23 @@ def remove_adjacent(nums):
 #
 def linear_merge(sorted1, sorted2):
     """  +++your code here+++ """
-    return
+    merged_sorted = []
+    i, j = 0, 0
+    while i < len(sorted1) and j < len(sorted2):
+        # insert the smaller value each iteration
+        if sorted1[i] < sorted2[j]:
+            merged_sorted.append(sorted1[i])
+            i += 1
+        else:
+            merged_sorted.append(sorted2[j])
+            j += 1
+    # insert the remaining items that wasn't covered in the loop
+    if i != len(sorted1):
+        merged_sorted.extend(sorted1[i:])
+    elif j != len(sorted2):
+        merged_sorted.extend(sorted2[j:])
+
+    return merged_sorted
 
 
 def test(got, expected):
