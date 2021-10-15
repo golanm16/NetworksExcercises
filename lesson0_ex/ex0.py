@@ -1,5 +1,23 @@
 # name: golan matuf
 # date: 20211007
+import this
+NUMBER_OF_DIGITS = 5
+
+
+def check_functions():
+    assert(check_numbers('12345'), True)
+    assert(check_numbers('abcde'), False)
+    assert(check_numbers('123'), False)
+    assert(check_numbers(''), False)
+    assert(check_numbers('0000000000'), False)
+    assert(check_numbers('a'), False)
+
+
+def check_numbers(num):
+    if len(num) != NUMBER_OF_DIGITS or not num.isdecimal():
+        return False
+    return True
+
 
 def make_magic(num):
     """
@@ -18,7 +36,10 @@ def make_magic(num):
 
 
 def main():
+    check_functions()
     five_digits = input("please enter a five digit number: ")
+    while not check_numbers(five_digits):
+        five_digits = input("please enter a five digit number: ")
     digits_str, digits_sum = make_magic(five_digits)
     print("you entered the number:", five_digits)
     print("the digits of this number are:", digits_str)
