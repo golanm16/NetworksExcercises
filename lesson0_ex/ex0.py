@@ -5,15 +5,22 @@ NUMBER_OF_DIGITS = 5
 
 
 def check_functions():
-    assert(check_numbers('12345'), True)
-    assert(check_numbers('abcde'), False)
-    assert(check_numbers('123'), False)
-    assert(check_numbers(''), False)
-    assert(check_numbers('0000000000'), False)
-    assert(check_numbers('a'), False)
+    assert (check_numbers('12345')) is True
+    assert (check_numbers('abcde')) is False
+    assert (check_numbers('123')) is False
+    assert (check_numbers('')) is False
+    assert (check_numbers('0000000000')) is False
+    assert (check_numbers('a')) is False
+    assert (check_numbers('1234O')) is False
 
 
 def check_numbers(num):
+    """
+    check if the user input is
+    :param num: a string that needs checking if it's length equal NUMBER_OF_DIGITS,
+                and check that it is a decimal number that we can sum
+    :return:
+    """
     if len(num) != NUMBER_OF_DIGITS or not num.isdecimal():
         return False
     return True
