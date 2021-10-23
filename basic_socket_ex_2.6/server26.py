@@ -18,21 +18,30 @@ def main():
     while True:
         # Get message from socket and check if it is according to protocol
         valid_msg, cmd = protocol.get_msg(client_socket)
+        print("message received from client. checking validity...")
         if valid_msg:
             # 1. Print received message
+            print("client returned a valid response.\nchecking if: " + cmd + "is a valid command...")
             # 2. Check if the command is valid
             # 3. If valid command - create response
+            if protocol.check_cmd(cmd):
+                print("command is valid, creating response...")
+                response = protocol.create_server_rsp(cmd)
             else:
                 response = "Wrong command"
+                print(response)
         else:
+            print()
             response = "Wrong protocol"
             client_socket.recv(1024)  # Attempt to empty the socket from possible garbage
         # Handle EXIT command, no need to respond to the client
-
+        if cmd.lower() == 'exit':
+            break
         # Send response to the client
-
+        client_socket.send(response)
     print("Closing\n")
     # Close sockets
+    server_socket.close()
 
 
 if __name__ == "__main__":
