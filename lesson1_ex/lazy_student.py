@@ -1,5 +1,5 @@
 # author: golan matuf
-# date: 12.10.21 (20211014)
+# date: 18.10.21 (20211018)
 # python lazy_student.py homework.txt solutions.txt
 
 TEXT_FILE_TYPE = '.txt'
@@ -32,8 +32,6 @@ def check_functions():
     # region check check_valid_homework
     assert (check_valid_homework('1 + 3')) \
            == (True, 'no error')
-    assert (check_valid_homework('1+ 3')) \
-           == (False, " : error: one or more of the operands is not a number\n")
     assert (check_valid_homework('1 + a')) \
            == (False, " : error: one or more of the operands is not a number\n")
     assert (check_valid_homework('+ + 1')) \
@@ -47,6 +45,8 @@ def check_functions():
     assert (check_valid_homework('1 1 1')) \
            == (False, " : error: the operator is not in the list of recognized operators\n")
     assert (check_valid_homework('1+11')) \
+           == (False, " : error: hw_line not following the homework convention: operand1 operator operand2\n")
+    assert (check_valid_homework('1+ 3')) \
            == (False, " : error: hw_line not following the homework convention: operand1 operator operand2\n")
     assert (check_valid_homework('1 +   1')) \
            == (False, " : error: hw_line not following the homework convention: operand1 operator operand2\n")
