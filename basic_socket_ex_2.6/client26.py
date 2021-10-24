@@ -12,21 +12,31 @@ def main():
     my_socket.connect(("127.0.0.1", protocol.PORT))
 
     while True:
-        user_input = input("Enter command\n")
+        user_cmd = input("Enter command\n")
         # Check if user entered a valid command as defined in protocol
-        valid_cmd = protocol.check_cmd(user_input)
-
+        valid_cmd = protocol.check_cmd(user_cmd)
 
         if valid_cmd:
             # If the command is valid:
             # 1. Add length field ("RAND" -> "04RAND")
-            # 2. Send it to the server
-            # 3. If command is EXIT, break from while loop
-            # 4. Get server's response
-            # 5. If server's response is valid, print it
+            cmd = protocol.create_msg(user_cmd)
 
+            # 2. Send it to the server
+            my_socket.send(cmd)
+
+            # 3. If command is EXIT, break from while loop
+            if user_cmd == 'EXIT':
+                print("exiting program")
+                break
+
+            # 4. Get server's response
+            valid_rsp, response = protocol.get_msg(my_socket)
+
+            # 5. If server's response is valid, print it
+            if valid_rsp:
+                print("the server responded: " + response)
             else:
-                print("Response not valid\n")
+                print("server returned an invalid response\n")
         else:
             print("Not a valid command")
 
