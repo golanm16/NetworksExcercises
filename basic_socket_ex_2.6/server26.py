@@ -5,6 +5,7 @@
 
 import socket
 import protocol
+import animation
 
 
 def main():
@@ -12,7 +13,10 @@ def main():
     server_socket.bind(("0.0.0.0", protocol.PORT))
     server_socket.listen()
     print("Server is up and running")
+    wait_animation = animation.Wait('spinner', text="waiting for a client to connect ", speed=0.25)
+    wait_animation.start()
     (client_socket, client_address) = server_socket.accept()
+    wait_animation.stop()
     print("Client connected")
 
     while True:
@@ -31,14 +35,15 @@ def main():
                 response = "Wrong command"
                 print(response)
         else:
-            print()
             response = "Wrong protocol"
+            print(response)
             client_socket.recv(1024)  # Attempt to empty the socket from possible garbage
         # Handle EXIT command, no need to respond to the client
-        if cmd.lower() == 'exit':
+        if cmd == 'EXIT':
             break
         # Send response to the client
-        client_socket.send(response)
+        print("sending response: " + response + " to client")
+        client_socket.send(protocol.create_msg(response))
     print("Closing\n")
     # Close sockets
     server_socket.close()
