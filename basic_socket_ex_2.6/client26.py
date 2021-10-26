@@ -1,6 +1,6 @@
 """EX 2.6 client implementation
-   Author:
-   Date:
+   Author: Golan Matuf
+   Date: 02.10.2021
 """
 
 import socket
@@ -12,7 +12,7 @@ def main():
     my_socket.connect(("127.0.0.1", protocol.PORT))
 
     while True:
-        user_cmd = input("Enter command\n")
+        user_cmd = input("Enter command: ")
         # Check if user entered a valid command as defined in protocol
         valid_cmd = protocol.check_cmd(user_cmd)
 
@@ -34,11 +34,11 @@ def main():
 
             # 5. If server's response is valid, print it
             if valid_rsp:
-                print("the server responded: " + response)
+                print("the server responded: " + response + "\n")
             else:
                 print("server returned an invalid response\n")
         else:
-            print("Not a valid command")
+            print("invalid command\n")
 
     print("Closing\n")
     # Close socket

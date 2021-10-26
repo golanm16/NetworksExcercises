@@ -1,6 +1,6 @@
 """EX 2.6 server implementation
-   Author:
-   Date:
+   Author: Golan Matuf
+   Date: 02.10.2021
 """
 
 import socket
@@ -9,6 +9,7 @@ import animation
 
 
 def main():
+    protocol.check_functions()
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(("0.0.0.0", protocol.PORT))
     server_socket.listen()
@@ -22,10 +23,10 @@ def main():
     while True:
         # Get message from socket and check if it is according to protocol
         valid_msg, cmd = protocol.get_msg(client_socket)
-        print("message received from client. checking validity...")
+        print("message received from client.")
         if valid_msg:
             # 1. Print received message
-            print("client returned a valid response.\nchecking if: " + cmd + "is a valid command...")
+            print("client returned a valid response.\nchecking if: '" + cmd + "' is a valid command...")
             # 2. Check if the command is valid
             # 3. If valid command - create response
             if protocol.check_cmd(cmd):
@@ -37,7 +38,7 @@ def main():
         else:
             response = "Wrong protocol"
             print(response)
-            client_socket.recv(1024)  # Attempt to empty the socket from possible garbage
+            # client_socket.recv(1024)  # Attempt to empty the socket from possible garbage
         # Handle EXIT command, no need to respond to the client
         if cmd == 'EXIT':
             break

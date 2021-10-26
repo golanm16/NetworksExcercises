@@ -14,15 +14,15 @@ def main():
     while True:
         user_cmd = input("Enter command\n")
         # Check if user entered a valid command as defined in protocol
-        valid_cmd = protocol.check_cmd(user_cmd)
+        # valid_cmd = protocol.check_cmd(user_cmd)
 
-        if valid_cmd:
+        if True:
             # If the command is valid:
             # 1. Add length field ("RAND" -> "04RAND")
             cmd = protocol.create_msg(user_cmd)
 
             # 2. Send it to the server
-            my_socket.send(cmd)
+            my_socket.send(user_cmd.encode())
 
             # 3. If command is EXIT, break from while loop
             if user_cmd == 'EXIT':
