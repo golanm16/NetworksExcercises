@@ -1,14 +1,15 @@
 #   Ex. 2.7 template - client side
 #   Author: Barak Gonen, 2017
 #   Modified for Python 3, 2020
-
-
+import pathlib
 import socket
 import protocol
 
 
-IP = ????
-SAVED_PHOTO_LOCATION = ???? # The path + filename where the copy of the screenshot at the client should be saved
+IP = "127.0.0.1"
+# The path + filename where the copy of the screenshot at the client should be saved
+SAVED_PHOTO_LOCATION = pathlib.Path().resolve()
+
 
 def handle_server_response(my_socket, cmd):
     """
@@ -23,7 +24,8 @@ def handle_server_response(my_socket, cmd):
 
 def main():
     # open socket with the server
-
+    my_socket = socket.socket()
+    my_socket.connect((IP, protocol.PORT))
     # (2)
 
     # print instructions

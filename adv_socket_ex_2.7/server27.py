@@ -3,11 +3,15 @@
 #   Modified for Python 3, 2020
 
 import socket
+
+import animation
+
 import protocol
 
 
-IP = ????
-PHOTO_PATH = ???? # The path + filename where the screenshot at the server should be saved
+IP = "0.0.0.0"
+# The path + filename where the screenshot at the server should be saved
+PHOTO_PATH = pathlib.Path().resolve() + r"server_screenshot"
 
 
 def check_client_request(cmd):
@@ -50,7 +54,15 @@ def handle_client_request(command, params):
 
 def main():
     # open socket with client
-
+    server_socket = socket.socket()
+    server_socket.bind((IP, protocol.PORT))
+    server_socket.listen()
+    print("Server is up and running")
+    wait_animation = animation.Wait('spinner', text="waiting for a client to connect ... ", speed=0.25)
+    wait_animation.start()
+    (client_socket, client_address) = server_socket.accept()
+    wait_animation.stop()
+    print("Client connected")
     # (1)
 
     # handle requests until user asks to exit
