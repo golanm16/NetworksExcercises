@@ -1,7 +1,7 @@
 #   Ex. 2.7 template - client side
 #   Author: Barak Gonen, 2017
 #   Modified for Python 3, 2020
-import pathlib
+# import pathlib
 import socket
 import protocol
 
@@ -54,6 +54,7 @@ def main():
             print("Not a valid command, or missing parameters\n")
 
     my_socket.close()
+
 
 if __name__ == '__main__':
     main()
