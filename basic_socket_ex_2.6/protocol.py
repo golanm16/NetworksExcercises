@@ -63,8 +63,7 @@ def create_msg(msg_data):
     return msg.encode()
 
 
-def get_msg(my_socket):
-    print(my_socket)
+def get_msg(my_socket: socket):
     """Extract message from protocol, without the length field
        If length field does not include a number, returns False, "Error" """
     msg_length = my_socket.recv(LENGTH_FIELD_SIZE).decode()

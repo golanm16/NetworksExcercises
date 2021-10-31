@@ -8,7 +8,8 @@ import protocol
 
 IP = "127.0.0.1"
 # The path + filename where the copy of the screenshot at the client should be saved
-SAVED_PHOTO_LOCATION = pathlib.Path().resolve()
+# SAVED_PHOTO_LOCATION = pathlib.Path().resolve()
+SAVED_PHOTO_LOCATION = r"D:\Coding\networks\NetworksExercises\adv_socket_ex_2.7" + r"\client_screenshot.jpg"
 
 
 def handle_server_response(my_socket, cmd):
@@ -18,8 +19,11 @@ def handle_server_response(my_socket, cmd):
     Note- special attention should be given to SEND_PHOTO as it requires and extra receive
     """
     # (8) treat all responses except SEND_PHOTO
-
+    response = protocol.get_msg(my_socket)
     # (10) treat SEND_PHOTO
+    if cmd == 'SEND_PHOTO':
+
+    return response
 
 
 def main():
@@ -35,10 +39,10 @@ def main():
     # loop until user requested to exit
     while True:
         cmd = input("Please enter command:\n")
-        if protocol_solution.check_cmd(cmd):
-            packet = protocol_solution.create_msg(cmd)
+        if protocol.check_cmd(cmd):
+            packet = protocol.create_msg(cmd)
             my_socket.send(packet)
-            handle_server_response(my_socket, cmd)
+            response = handle_server_response(my_socket, cmd)
             if cmd == 'EXIT':
                 break
         else:
