@@ -18,7 +18,6 @@ IP = "0.0.0.0"
 # can use auto path getting for easy time
 # PHOTO_PATH = str(pathlib.Path().resolve()) + r"server_screenshot.jpg"
 PHOTO_PATH = r"D:\Coding\networks\NetworksExercises\adv_socket_ex_2.7" + r"\server_screenshot.jpg"
-PHOTO_CHUNK = 1024
 
 
 def __dir_response(param):
@@ -84,7 +83,7 @@ def __exit_response():
     return True, "exiting ..."
 
 
-@animation.wait('spinner', text=f"sending image to client by chunks of ${PHOTO_CHUNK} ... ", speed=0.25)
+@animation.wait('spinner', text=f"sending image to client by chunks of ${protocol.PHOTO_CHUNK} ... ", speed=0.25)
 def send_photo(client_socket: socket):
     """
     sends the server screenshot to the client's socket
@@ -95,11 +94,12 @@ def send_photo(client_socket: socket):
     photo_file = open(PHOTO_PATH, 'rb')
 
     # get a piece of the image
-    photo_chunk = photo_file.read(PHOTO_CHUNK)
+    photo_chunk = photo_file.read(protocol.PHOTO_CHUNK)
     while photo_chunk:
         # send the piece of the image
         client_socket.send(photo_chunk)
-        photo_chunk = photo_file.read(PHOTO_CHUNK)
+        photo_chunk = photo_file.read(protocol.PHOTO_CHUNK)
+    photo_file.close()
 
 
 # list the known commands, how many parameters they can get, and what function handles them

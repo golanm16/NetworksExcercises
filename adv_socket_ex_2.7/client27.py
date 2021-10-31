@@ -22,7 +22,12 @@ def handle_server_response(my_socket, cmd):
     response = protocol.get_msg(my_socket)
     # (10) treat SEND_PHOTO
     if cmd == 'SEND_PHOTO':
-
+        photo_file = open(SAVED_PHOTO_LOCATION, 'wb')
+        photo_chunk = my_socket.recv(protocol.PHOTO_CHUNK)
+        while photo_chunk:
+            photo_file.write(photo_chunk)
+            photo_chunk = my_socket.recv(protocol.PHOTO_CHUNK)
+        photo_file.close()
     return response
 
 

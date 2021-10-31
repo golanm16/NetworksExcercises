@@ -3,6 +3,7 @@ import socket
 
 LENGTH_FIELD_SIZE = 4
 PORT = 8820
+PHOTO_CHUNK = 1024
 """
 command             #parameters
 DIR:                1
