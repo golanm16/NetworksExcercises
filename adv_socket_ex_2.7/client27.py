@@ -3,6 +3,9 @@
 #   Modified for Python 3, 2020
 # import pathlib
 import socket
+
+import animation
+
 import protocol
 
 
@@ -12,6 +15,7 @@ IP = "127.0.0.1"
 SAVED_PHOTO_LOCATION = r"D:\Coding\networks\NetworksExercises\adv_socket_ex_2.7" + r"\client_screenshot.jpg"
 
 
+@animation.wait('spinner', text="waiting for server response ... ", speed=0.25)
 def handle_server_response(my_socket, cmd):
     """
     Receive the response from the server and handle it, according to the request
@@ -19,16 +23,23 @@ def handle_server_response(my_socket, cmd):
     Note- special attention should be given to SEND_PHOTO as it requires and extra receive
     """
     # (8) treat all responses except SEND_PHOTO
-    response = protocol.get_msg(my_socket)
+    valid_rsp, response = protocol.get_msg(my_socket)
     # (10) treat SEND_PHOTO
-    if cmd == 'SEND_PHOTO':
+    if cmd == 'SEND_PHOTO' and valid_rsp and response.isdecimal():
         photo_file = open(SAVED_PHOTO_LOCATION, 'wb')
-        photo_chunk = my_socket.recv(protocol.PHOTO_CHUNK)
+        photo_size = int(response)
+        while photo_size > 0:
+            photo_chunk = my_socket.recv(protocol.PHOTO_CHUNK_SIZE)
+            photo_file.write(photo_chunk)
+            photo_size -= protocol.PHOTO_CHUNK_SIZE
+        """
+        photo_chunk = my_socket.recv(protocol.PHOTO_CHUNK_SIZE)
         while photo_chunk:
             photo_file.write(photo_chunk)
-            photo_chunk = my_socket.recv(protocol.PHOTO_CHUNK)
+            photo_chunk = my_socket.recv(protocol.PHOTO_CHUNK_SIZE)
+        """
         photo_file.close()
-    return response
+    return valid_rsp, response
 
 
 def main():
@@ -47,9 +58,14 @@ def main():
         if protocol.check_cmd(cmd):
             packet = protocol.create_msg(cmd)
             my_socket.send(packet)
-            response = handle_server_response(my_socket, cmd)
+            print("command sent to server.")
             if cmd == 'EXIT':
                 break
+            valid_rsp, response = handle_server_response(my_socket, cmd)
+            if valid_rsp:
+                print(f"the server responded: {response}")
+            else:
+                print("server returned an invalid response")
         else:
             print("Not a valid command, or missing parameters\n")
 

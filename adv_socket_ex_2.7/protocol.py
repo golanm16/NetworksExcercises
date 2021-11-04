@@ -1,9 +1,12 @@
-#   Ex. 2.7 template - protocol
+#   Ex. 2.7  protocol
+# author: Golan Matuf
+# date: 01.11.21
+
 import socket
 
 LENGTH_FIELD_SIZE = 4
 PORT = 8820
-PHOTO_CHUNK = 1024
+PHOTO_CHUNK_SIZE = 1024
 """
 command             #parameters
 DIR:                1
@@ -28,6 +31,7 @@ def check_cmd(data):
     """
     # data = [command, param1, param2, ...]-> data[0] =command
     # if data is empty can't execute a command
+    data = data.split()
     if len(data) == 0:
         return False
     # the first entry in the data is the command
@@ -70,4 +74,3 @@ def get_msg(my_socket: socket):
         # attempt to empty the socket
         # my_socket.recv(1024)
         return False, "Error: length field did not contain only numbers"
-

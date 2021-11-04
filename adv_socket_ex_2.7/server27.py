@@ -63,27 +63,28 @@ def __execute_response(param):
     return is_successful, notes
 
 
-def __take_screenshot_response():
+def __take_screenshot_response(param):
     is_successful = True
     notes = 'success!'
     try:
-        image = pyautogui.screenshot()
+        image = pyautogui.screenshot(PHOTO_PATH)
         image.save(PHOTO_PATH)
     except Exception as e:
         notes = str(e)
+        print(f"there was an exception:\n{notes}")
         is_successful = False
     return is_successful, notes
 
 
-def __send_photo_response():
-    return os.path.isfile(PHOTO_PATH) and os.path.getsize(PHOTO_PATH)
+def __send_photo_response(param):
+    return os.path.isfile(PHOTO_PATH), str(os.path.getsize(PHOTO_PATH))
 
 
-def __exit_response():
+def __exit_response(param):
     return True, "exiting ..."
 
 
-@animation.wait('spinner', text=f"sending image to client by chunks of ${protocol.PHOTO_CHUNK} ... ", speed=0.25)
+@animation.wait('spinner', text=f"sending image to client by chunks of {protocol.PHOTO_CHUNK_SIZE} ... ", speed=0.25)
 def send_photo(client_socket: socket):
     """
     sends the server screenshot to the client's socket
@@ -94,11 +95,11 @@ def send_photo(client_socket: socket):
     photo_file = open(PHOTO_PATH, 'rb')
 
     # get a piece of the image
-    photo_chunk = photo_file.read(protocol.PHOTO_CHUNK)
+    photo_chunk = photo_file.read(protocol.PHOTO_CHUNK_SIZE)
     while photo_chunk:
         # send the piece of the image
         client_socket.send(photo_chunk)
-        photo_chunk = photo_file.read(protocol.PHOTO_CHUNK)
+        photo_chunk = photo_file.read(protocol.PHOTO_CHUNK_SIZE)
     photo_file.close()
 
 
@@ -124,9 +125,9 @@ def check_client_request(cmd_data):
     # Use protocol.check_cmd first
     # protocol.check_cmd check that the command is one of the known commands,
     # and that they sent the correct number of parameters.
-    cmd_with_params = cmd_data.split()
-    protocol_check = protocol.check_cmd(cmd_with_params)
+    protocol_check = protocol.check_cmd(cmd_data)
     is_request_valid = False
+    cmd_with_params = cmd_data.split()
     # the first entry in the data is the command
     cmd = cmd_with_params[0]
     # the rest of the data is the command params
@@ -216,18 +217,18 @@ def main():
                 # prepare a response using "handle_client_request"
                 is_command_successful, response = handle_client_request(command, params)
                 # add length field using "create_msg"
-                msg = protocol.create_msg(response)
+                msg = protocol.create_msg(str(response))
                 # send to client
                 client_socket.send(msg)
 
-                if command == 'SEND_PHOTO' and is_command_successful:
-                    # Send the data itself to the client
-                    send_photo(client_socket)
+                if command == 'SEND_PHOTO':
+                    if is_command_successful:
+                        # Send the data itself to the client
+                        send_photo(client_socket)
+                    else:
+                        response = "something went wrong with sending the photo. this should not happen"
+                        print(response)
                     # (9)
-                else:
-                    response = "something went wrong with sending the photo. this should not happen"
-                    print(response)
-                    is_command_successful = False
                 if command == 'EXIT':
                     break
             else:
