@@ -1,0 +1,13 @@
+1 + 1 = 2
+1 * 2 = 2
+2 / 2 = 1.0
+9 - 8 = 1
+9 9 8 : error: the operator is not in the list of recognized operators
+9    * 555 : error: hw_line not following the homework convention: operand1 operator operand2
+9 / 8 = 1.125
+1 / 3 = 0.3333
+a + 2-b : error: one or more of the operands is not a number
+1 / 0 : error: can't divide by zero
+ : error: hw_line not following the homework convention: operand1 operator operand2
+1 + 1 = 2
+int(1) + 7 : error: one or more of the operands is not a number
