@@ -43,3 +43,15 @@ commands:
 2: get a random number?
 3: get a pong back from the server
 4: custom string
+
+
+
+ip+ports:
+client: 192.168.1.113:50450
+server: 192.168.1.118:1400
+
+protocol:
+
+field:        protocol name   msg number(0-31)    msg length  ?       msg/command
+example:      BPR             04                  0001        097     0
+size(bytes):  3               2                   4           3       as length field
