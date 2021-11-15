@@ -40,7 +40,7 @@ BPR 04 0001 097 0
 commands:
 0: exit the script
 1: get the date
-2: get a random number
+2: get a random number (0-100?)
 3: get a pong back from the server (ping the server)
 4: custom string (server returns ACK)
 
@@ -57,9 +57,59 @@ example:      BPR             04                  0001        097     0
 size(bytes):  3               2                   4           3       as length field
 
 
+couldn't make out how to calculate this field
+but here is what i could deduce
 ?:
+maybe error checking?
 097: command 0
 098: command 1
 099: command 2
 100: command 3
 command 4 something with the string?
+
+BPR 18 0003 002 ACK
+BPR 19 0003 002 ACK
+observation: both have 002
+conclusion: msg number irrelevant?
+
+BPR 03 0002 153 70
+BPR 11 0002 153 16
+
+BPR 17 0002 152 51
+BPR 22 0002 152 15
+
+for dates:
+
+BPR 00 0024 242 Tue Dec 05 21:40:17 2017
+BPR 04 0024 244 Tue Dec 05 21:40:46 2017
+BPR 06 0024 239 Tue Dec 05 21:40:50 2017
+BPR 12 0024 242 Tue Dec 05 21:41:16 2017
+BPR 15 0024 241 Tue Dec 05 21:41:24 2017
+BPR 21 0024 248 Tue Dec 05 21:41:58 2017
+BPR 26 0024 237 Tue Dec 05 21:42:10 2017
+BPR 28 0024 243 Tue Dec 05 21:42:16 2017
+BPR 00 0024 240 Tue Dec 05 21:42:40 2017
+
+lets remove anything equal:
+00 0024 242 0:17    8+234=242
+04 0024 244 0:46    10+234=244
+06 0024 239 0:50    5
+12 0024 242 1:16    8
+15 0024 241 1:24    7
+21 0024 248 1:58    14
+26 0024 237 2:10    3
+28 0024 243 2:16    9
+00 0024 240 2:40    6
+
+base value: 234
+so maybe 'Tue Dec 05 21:4 2017' = 234 somehow?
+so 'Tue Dec' = 234 -0-5-2-1-4-2-1-7 = 212
+what about space?
+
+
+for random number:
+base value = 146
+
+BPR 08 0012 179 4 HELLO WORLD -> 796 ascii sum
+BPR 09 0013 237 4 GOOD EVENING -> 853
+BPR 10 0024 186 4 I AM COOL CYBER STUDENT -> 
