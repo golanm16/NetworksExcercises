@@ -1,3 +1,5 @@
+# author: Golan Matuf
+# date: 08.12.2021
 import validators
 from scapy.all import *
 from scapy.layers.dns import *
