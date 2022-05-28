@@ -27,7 +27,7 @@ def main():
             print(f'found flag A from {pkt[IP].src}:{pkt[TCP].sport} : {SYN_COUNTERS[pkt[IP].src]}')
             # if got syn previously then it is saved, so delete it because the ack closed the syn
             if pkt[TCP].sport in SYN_COUNTERS[pkt[IP].src]:
-                # e.g. really no such acks were found in the file
+                # p.s. really no such acks were found in the file
                 print(f'removing {pkt[TCP].sport}')
                 SYN_COUNTERS[pkt[IP].src].remove(pkt[TCP].sport)
 

@@ -86,7 +86,7 @@ def handle_client_request(resource, client_socket):
         # read the data from the file
         data = get_file_data_encoded(url)
         http_response = http_header.encode() + data
-        print(f'header:\n{http_header}')
+        print(f'header:\n{http_response}')
         # send response
         client_socket.send(http_response)
 
